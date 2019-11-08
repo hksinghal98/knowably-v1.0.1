@@ -6,6 +6,7 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -29,46 +30,46 @@ public class MedicineQueryService {
         JSONObject obj = fetchRedis();
         System.out.println("constructor");
         JSONObject concepts = (JSONObject) obj.get("labels");
-        String[] concept = (String[]) concepts.get("value");
-        for(int i=0;i<concept.length;i++)
+        JSONArray concept = (JSONArray) concepts.get("value");
+        for(int i=0;i<concept.size();i++)
         {
-            conceptList.add(concept[i]);
+            conceptList.add((String) concept.get(i));
         }
         JSONObject diseases = (JSONObject) obj.get("disease");
-        String[] disease = (String[]) diseases.get("value");
-        for(int i=0;i<disease.length;i++)
+        JSONArray disease = (JSONArray) diseases.get("value");
+        for(int i=0;i<disease.size();i++)
         {
-            diseaseList.add(disease[i]);
+            diseaseList.add((String) disease.get(i));
         }
         JSONObject treatments = (JSONObject) obj.get("treatment");
-        String[] treatment = (String[]) treatments.get("value");
-        for(int i=0;i<treatment.length;i++)
+        JSONArray treatment = (JSONArray) treatments.get("value");
+        for(int i=0;i<treatment.size();i++)
         {
-            medicationList.add(treatment[i]);
+            medicationList.add((String)treatment.get(i));
         }
         JSONObject symptoms = (JSONObject) obj.get("symptoms");
-        String[] symptom = (String[]) symptoms.get("value");
-        for(int i=0;i<symptom.length;i++)
+        JSONArray symptom = (JSONArray) symptoms.get("value");
+        for(int i=0;i<symptom.size();i++)
         {
-            symptomList.add(symptom[i]);
+            symptomList.add((String) symptom.get(i));
         }
         JSONObject riskFactors = (JSONObject) obj.get("risk factors");
-        String[] riskFactor = (String[]) riskFactors.get("value");
-        for(int i=0;i<riskFactor.length;i++)
+        JSONArray riskFactor = (JSONArray) riskFactors.get("value");
+        for(int i=0;i<riskFactor.size();i++)
         {
-            riskList.add(riskFactor[i]);
+            riskList.add((String) riskFactor.get(i));
         }
         JSONObject frequencies = (JSONObject) obj.get("frequency");
-        String[] frequency = (String[]) frequencies.get("value");
-        for(int i=0;i<frequency.length;i++)
+        JSONArray frequency = (JSONArray) frequencies.get("value");
+        for(int i=0;i<frequency.size();i++)
         {
-            frequencyList.add(frequency[i]);
+            frequencyList.add((String) frequency.get(i));
         }
         JSONObject deaths = (JSONObject) obj.get("[deaths]");
-        String[] death = (String[]) deaths.get("value");
-        for(int i=0;i<death.length;i++)
+        JSONArray death = (JSONArray) deaths.get("value");
+        for(int i=0;i<death.size();i++)
         {
-            deathList.add(death[i]);
+            deathList.add((String) death.get(i));
         }
     }
     private String[] stopWords = new String[]{"what","and","like","taken","also","for","it", "with","who","which","required","used","do","is","?", "by","take","are", "give", "of", "in", "times","me","How","many", "the","if","a","has","getting"};
