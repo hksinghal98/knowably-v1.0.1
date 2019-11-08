@@ -2,11 +2,11 @@ package com.stackroute.queryservice.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mavenproject.MedicineQueryNlp;
-import com.mavenproject.MovieQueryNlp;
-import com.mavenproject.domain.Output;
+import com.stackroute.queryservice.domain.Output;
 import com.stackroute.queryservice.domain.QueryInput;
 import com.stackroute.queryservice.domain.QueryOutput;
+import com.stackroute.queryservice.service.MedicineQueryService;
+import com.stackroute.queryservice.service.MovieQueryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.*;
 
 @Api(value = "QuerySearch Rest API")
@@ -37,7 +39,7 @@ public class QueryServiceController {
     public ResponseEntity<?> processQuery(@RequestBody QueryInput queryInput) throws JsonProcessingException {
         if (queryInput.getDomain().equalsIgnoreCase("movie")) {
             try {
-                MovieQueryNlp movieQueryNlp = new MovieQueryNlp();
+                MovieQueryService movieQueryNlp = new MovieQueryService();
                 List<String> lemmatizedList = movieQueryNlp.getLemmatizedList(queryInput.getSearchTerm());
                 String stringWithoutStopWords = "";
                 for (int i = 0; i < lemmatizedList.size(); i++) {
@@ -68,7 +70,7 @@ public class QueryServiceController {
 
         } else if (queryInput.getDomain().equalsIgnoreCase("medical")) {
             try {
-                MedicineQueryNlp medicineQueryNlp = new MedicineQueryNlp();
+                MedicineQueryService medicineQueryNlp = new MedicineQueryService();
                 List<String> lemmatizedList = medicineQueryNlp.getLemmatizedList(queryInput.getSearchTerm());
                 String stringWithoutStopWords = "";
                 for (int i = 0; i < lemmatizedList.size(); i++) {
@@ -91,8 +93,8 @@ public class QueryServiceController {
                 kafkaTemplate.send(topic, json);
                 responseEntity = new ResponseEntity<String>(json, HttpStatus.OK);
             } catch (Exception e) {
-		    e.printStackTrace();
                 responseEntity = new ResponseEntity<String>(e.getMessage(), HttpStatus.CONFLICT);
+                e.printStackTrace();
             }
             System.out.println("medical");
         }
