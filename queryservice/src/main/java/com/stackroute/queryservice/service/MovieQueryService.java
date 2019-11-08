@@ -6,6 +6,7 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -30,58 +31,58 @@ public class MovieQueryService {
     public MovieQueryService() throws IOException, ParseException {
         JSONObject obj = fetchRedis();
         JSONObject concepts = (JSONObject) obj.get("labels");
-        String[] concept = (String[]) concepts.get("value");
-        for(int i=0;i<concept.length;i++)
+        JSONArray concept = (JSONArray) concepts.get("value");
+        for(int i=0;i<concept.size();i++)
         {
-            conceptList.add(concept[i]);
+            conceptList.add((String) concept.get(i));
         }
         JSONObject movies = (JSONObject) obj.get("movie");
-        String[] movie = (String[]) movies.get("value");
-        for(int i=0;i<movie.length;i++)
+        JSONArray movie = (JSONArray) movies.get("value");
+        for(int i=0;i<movie.size();i++)
         {
-            movieList.add(movie[i]);
+            movieList.add((String) movie.get(i));
         }
         JSONObject collections = (JSONObject) obj.get("boxoffice");
-        String[] collection = (String[]) collections.get("value");
-        for(int i=0;i<collection.length;i++)
+        JSONArray collection = (JSONArray) collections.get("value");
+        for(int i=0;i<collection.size();i++)
         {
-            boxOfficeList.add(collection[i]);
+            boxOfficeList.add((String) collection.get(i));
         }
         JSONObject productions = (JSONObject) obj.get("produced by");
-        String[] production = (String[]) productions.get("value");
-        for(int i=0;i<production.length;i++)
+        JSONArray production = (JSONArray) productions.get("value");
+        for(int i=0;i<production.size();i++)
         {
-            productionHouseList.add(production[i]);
+            productionHouseList.add((String) production.get(i));
         }
         JSONObject actors = (JSONObject) obj.get("actor");
-        String[] actor = (String[]) actors.get("value");
-        for(int i=0;i<actor.length;i++)
+        JSONArray actor = (JSONArray) actors.get("value");
+        for(int i=0;i<actor.size();i++)
         {
-            actorList.add(actor[i]);
+            actorList.add((String) actor.get(i));
         }
         JSONObject directors = (JSONObject) obj.get("directed by");
-        String[] director = (String[]) directors.get("value");
-        for(int i=0;i<director.length;i++)
+        JSONArray director = (JSONArray) directors.get("value");
+        for(int i=0;i<director.size();i++)
         {
-            directorList.add(director[i]);
+            directorList.add((String) director.get(i));
         }
         JSONObject releases = (JSONObject) obj.get("release date");
-        String[] release = (String[]) releases.get("value");
-        for(int i=0;i<release.length;i++)
+        JSONArray release = (JSONArray) releases.get("value");
+        for(int i=0;i<release.size();i++)
         {
-            releaseYearList.add(release[i]);
+            releaseYearList.add((String) release.get(i));
         }
         JSONObject countries = (JSONObject) obj.get("country");
-        String[] country = (String[]) countries.get("value");
-        for(int i=0;i<country.length;i++)
+        JSONArray country = (JSONArray) countries.get("value");
+        for(int i=0;i<country.size();i++)
         {
-            countryList.add(country[i]);
+            countryList.add((String) country.get(i));
         }
         JSONObject languages = (JSONObject) obj.get("language");
-        String[] language = (String[]) languages.get("value");
-        for(int i=0;i<language.length;i++)
+        JSONArray language = (JSONArray) languages.get("value");
+        for(int i=0;i<language.size();i++)
         {
-            languageList.add(language[i]);
+            languageList.add((String) language.get(i));
         }
     }
     private String[] stopWords = new String[]{"what","and","like","taken","also","for","it", "with","who","which","required","used","do","is","?", "by","take","are", "give", "times","me","How","many", "the","if","a","has","getting","that","do","name","after","before","between"};
